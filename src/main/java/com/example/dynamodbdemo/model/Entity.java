@@ -1,10 +1,14 @@
 package com.example.dynamodbdemo.model;
 
+import com.example.dynamodbdemo.converter.CustomAttributeConverterProvider;
+import software.amazon.awssdk.enhanced.dynamodb.DefaultAttributeConverterProvider;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.util.Optional;
 
-@DynamoDbBean
+@DynamoDbBean(converterProviders = {
+        CustomAttributeConverterProvider.class,
+        DefaultAttributeConverterProvider.class})
 public class Entity extends BaseEntity {
 
     private final Long customerId;
@@ -43,8 +47,6 @@ public class Entity extends BaseEntity {
     public Optional<String> getText() {
         return Optional.ofNullable(text);
     }
-
-    //TODO: commenting this method make project works, but 'text' attribute will not be written to DynamoDb
 
     public void setText(Optional<String> text) {
         // Do nothing, this is a derived attribute
