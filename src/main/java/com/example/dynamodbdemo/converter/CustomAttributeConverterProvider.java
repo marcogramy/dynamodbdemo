@@ -4,6 +4,7 @@ import software.amazon.awssdk.enhanced.dynamodb.AttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.AttributeConverterProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DefaultAttributeConverterProvider;
 import software.amazon.awssdk.enhanced.dynamodb.EnhancedType;
+import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.LongAttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.OptionalAttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.StringAttributeConverter;
 
@@ -20,8 +21,9 @@ public class CustomAttributeConverterProvider implements AttributeConverterProvi
     public CustomAttributeConverterProvider() {
         StringAttributeConverter stringAttributeConverter = new StringAttributeConverter();
         OptionalAttributeConverter<String> optionalStringConverter = OptionalAttributeConverter.create(stringAttributeConverter);
+        OptionalAttributeConverter<Long> optionalLongConverter = OptionalAttributeConverter.create(LongAttributeConverter.create());
 
-        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter);
+        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter);
         customConvertersMap = customConverters.stream().collect(Collectors.toMap(AttributeConverter::type, c -> c));
     }
 

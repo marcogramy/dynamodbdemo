@@ -28,6 +28,13 @@ public class Entity extends BaseEntity {
         this.text = text;
     }
 
+    public Entity(String contextId, String type, Long customerId, Long applicationId) {
+        super(contextId, type);
+        this.customerId = customerId;
+        this.applicationId = applicationId;
+        text = null;
+    }
+
     public Long getCustomerId() {
         return customerId;
     }
@@ -36,11 +43,11 @@ public class Entity extends BaseEntity {
         // Do nothing, this is a derived attribute
     }
 
-    public Long getApplicationId() {
-        return applicationId;
+    public Optional<Long> getApplicationId() {
+        return Optional.ofNullable(applicationId);
     }
 
-    public void setApplicationId(Long applicationId) {
+    public void setApplicationId(Optional<Long> applicationId) {
         // Do nothing, this is a derived attribute
     }
 
