@@ -5,12 +5,12 @@ import software.amazon.awssdk.enhanced.dynamodb.AttributeConverterProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DefaultAttributeConverterProvider;
 import software.amazon.awssdk.enhanced.dynamodb.EnhancedType;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.LongAttributeConverter;
+import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.MapAttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.OptionalAttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.StringAttributeConverter;
+import software.amazon.awssdk.enhanced.dynamodb.internal.converter.string.StringStringConverter;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CustomAttributeConverterProvider implements AttributeConverterProvider {
@@ -22,7 +22,14 @@ public class CustomAttributeConverterProvider implements AttributeConverterProvi
         OptionalAttributeConverter<String> optionalStringConverter = OptionalAttributeConverter.create(StringAttributeConverter.create());
         OptionalAttributeConverter<Long> optionalLongConverter = OptionalAttributeConverter.create(LongAttributeConverter.create());
 
-        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter);
+        MapAttributeConverter<Map<String, String>> mapConverter = MapAttributeConverter.builder(EnhancedType.mapOf(String.class, String.class))
+                .mapConstructor(HashMap::new)
+                .keyConverter(StringStringConverter.create())
+                .valueConverter(StringAttributeConverter.create())
+                .build();
+        OptionalAttributeConverter<Map<String, String>> optionalMapAttributeConverter = OptionalAttributeConverter.create(mapConverter);
+
+        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter, optionalMapAttributeConverter);
         customConvertersMap = customConverters.stream().collect(Collectors.toMap(AttributeConverter::type, c -> c));
     }
 

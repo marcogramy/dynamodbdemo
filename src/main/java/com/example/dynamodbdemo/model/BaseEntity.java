@@ -57,5 +57,5 @@ public class BaseEntity {
         return Optional.ofNullable(optionalData);
     }
 
-    //public void setOptionalData(Optional<Map<String, String>> optionalData) { } // Do nothing, this is a derived attribute
+    public void setOptionalData(Optional<Map<String, String>> optionalData) { } // Do nothing, this is a derived attribute
 }
