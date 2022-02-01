@@ -19,8 +19,7 @@ public class CustomAttributeConverterProvider implements AttributeConverterProvi
     private final AttributeConverterProvider defaultProvider = DefaultAttributeConverterProvider.create();
 
     public CustomAttributeConverterProvider() {
-        StringAttributeConverter stringAttributeConverter = new StringAttributeConverter();
-        OptionalAttributeConverter<String> optionalStringConverter = OptionalAttributeConverter.create(stringAttributeConverter);
+        OptionalAttributeConverter<String> optionalStringConverter = OptionalAttributeConverter.create(StringAttributeConverter.create());
         OptionalAttributeConverter<Long> optionalLongConverter = OptionalAttributeConverter.create(LongAttributeConverter.create());
 
         List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter);
