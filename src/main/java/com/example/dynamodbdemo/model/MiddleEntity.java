@@ -62,6 +62,6 @@ public class MiddleEntity extends BaseEntity {
         return Optional.ofNullable(deliveredAt);
     }
 
-    public void setDeliveredAt(Optional<Instant> deliveredAt) { } // Do nothing, this is a derived attribute
+    //public void setDeliveredAt(Optional<Instant> deliveredAt) { } // Do nothing, this is a derived attribute
 
 }
