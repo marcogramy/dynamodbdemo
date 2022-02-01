@@ -7,7 +7,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @DynamoDbBean(converterProviders = {
         CustomAttributeConverterProvider.class,
         DefaultAttributeConverterProvider.class})
-public class Entity extends MiddleEntity {
+public class Entity extends BaseEntity {
 
     private final Long customerId;
 
@@ -15,13 +15,8 @@ public class Entity extends MiddleEntity {
         customerId = null;
     }
 
-    public Entity(String contextId, String type, Long customerId, Long applicationId, String notificationText) {
-        super(contextId, type, applicationId, notificationText);
-        this.customerId = customerId;
-    }
-
-    public Entity(String contextId, String type, Long customerId, Long applicationId) {
-        super(contextId, type, applicationId);
+    public Entity(String contextId, String type, Long customerId, String notificationText) {
+        super(contextId, type, notificationText);
         this.customerId = customerId;
     }
 
@@ -32,6 +27,5 @@ public class Entity extends MiddleEntity {
     public void setCustomerId(Long customerId) {
         // Do nothing, this is a derived attribute
     }
-
 
 }

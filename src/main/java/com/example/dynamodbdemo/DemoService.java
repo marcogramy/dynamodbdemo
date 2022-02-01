@@ -20,7 +20,7 @@ public class DemoService {
         this.entityRepository = entityRepository;
 
         // Example entity object
-        Entity demoEntity = new Entity(getRandomString(), "type", 10L, 20L);
+        Entity demoEntity = new Entity(getRandomString(), "type", 10L, "fixed text");
 
         try {
             entityRepository.save(demoEntity);
