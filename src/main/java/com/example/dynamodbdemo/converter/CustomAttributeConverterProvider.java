@@ -1,16 +1,17 @@
 package com.example.dynamodbdemo.converter;
 
+import com.example.dynamodbdemo.model.OptModel;
 import software.amazon.awssdk.enhanced.dynamodb.AttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.AttributeConverterProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DefaultAttributeConverterProvider;
 import software.amazon.awssdk.enhanced.dynamodb.EnhancedType;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.LongAttributeConverter;
-import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.MapAttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.OptionalAttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.StringAttributeConverter;
-import software.amazon.awssdk.enhanced.dynamodb.internal.converter.string.StringStringConverter;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CustomAttributeConverterProvider implements AttributeConverterProvider {
@@ -22,14 +23,17 @@ public class CustomAttributeConverterProvider implements AttributeConverterProvi
         OptionalAttributeConverter<String> optionalStringConverter = OptionalAttributeConverter.create(StringAttributeConverter.create());
         OptionalAttributeConverter<Long> optionalLongConverter = OptionalAttributeConverter.create(LongAttributeConverter.create());
 
-        MapAttributeConverter<Map<String, String>> mapConverter = MapAttributeConverter.builder(EnhancedType.mapOf(String.class, String.class))
-                .mapConstructor(HashMap::new)
-                .keyConverter(StringStringConverter.create())
-                .valueConverter(StringAttributeConverter.create())
-                .build();
-        OptionalAttributeConverter<Map<String, String>> optionalMapAttributeConverter = OptionalAttributeConverter.create(mapConverter);
+        // Case 1: using custom AttributeConverter implementation
+        //OptionalAttributeConverter<Map<String, String>> optionalMapAttributeConverter = OptionalAttributeConverter.create(new HashMapAttributeConverter());
 
-        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter, optionalMapAttributeConverter);
+        // Case 2: using MapAttributeConverter from AWS SDK
+        //AttributeConverter<Map<String, String>> mapConverter = MapAttributeConverter.mapConverter(StringStringConverter.create(), StringAttributeConverter.create());
+        //OptionalAttributeConverter<Map<String, String>> optionalMapAttributeConverter = OptionalAttributeConverter.create(mapConverter);
+
+        // Custom converter for Optional custom object
+        OptionalAttributeConverter<OptModel> optionalOptModelConverter = OptionalAttributeConverter.create(new OptModelAttributeConverter());
+
+        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter, optionalOptModelConverter);
         customConvertersMap = customConverters.stream().collect(Collectors.toMap(AttributeConverter::type, c -> c));
     }
 
