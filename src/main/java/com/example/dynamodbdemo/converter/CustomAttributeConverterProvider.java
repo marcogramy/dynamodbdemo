@@ -6,8 +6,10 @@ import software.amazon.awssdk.enhanced.dynamodb.AttributeConverterProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DefaultAttributeConverterProvider;
 import software.amazon.awssdk.enhanced.dynamodb.EnhancedType;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.LongAttributeConverter;
+import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.MapAttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.OptionalAttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.StringAttributeConverter;
+import software.amazon.awssdk.enhanced.dynamodb.internal.converter.string.StringStringConverter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,13 +29,13 @@ public class CustomAttributeConverterProvider implements AttributeConverterProvi
         //OptionalAttributeConverter<Map<String, String>> optionalMapAttributeConverter = OptionalAttributeConverter.create(new HashMapAttributeConverter());
 
         // Case 2: using MapAttributeConverter from AWS SDK
-        //AttributeConverter<Map<String, String>> mapConverter = MapAttributeConverter.mapConverter(StringStringConverter.create(), StringAttributeConverter.create());
-        //OptionalAttributeConverter<Map<String, String>> optionalMapAttributeConverter = OptionalAttributeConverter.create(mapConverter);
+        AttributeConverter<Map<String, String>> mapConverter = MapAttributeConverter.mapConverter(StringStringConverter.create(), StringAttributeConverter.create());
+        OptionalAttributeConverter<Map<String, String>> optionalMapAttributeConverter = OptionalAttributeConverter.create(mapConverter);
 
         // Custom converter for Optional custom object
         OptionalAttributeConverter<OptModel> optionalOptModelConverter = OptionalAttributeConverter.create(new OptModelAttributeConverter());
 
-        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter, optionalOptModelConverter);
+        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter, optionalOptModelConverter, optionalMapAttributeConverter);
         customConvertersMap = customConverters.stream().collect(Collectors.toMap(AttributeConverter::type, c -> c));
     }
 

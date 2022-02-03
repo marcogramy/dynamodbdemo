@@ -69,7 +69,7 @@ public class BaseEntity {
     }
 
     //TODO: enabling this makes project startup fails
-    //public void setOptionalData(Optional<Map<String, String>> optionalData) { } // Do nothing, this is a derived attribute
+    public void setOptionalData(Optional<Map<String, String>> optionalData) { } // Do nothing, this is a derived attribute
 
     public Map<String, String> getData() {
         return data;
