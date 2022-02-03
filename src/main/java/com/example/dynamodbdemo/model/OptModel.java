@@ -1,10 +1,15 @@
 package com.example.dynamodbdemo.model;
 
+import com.example.dynamodbdemo.converter.CustomAttributeConverterProvider;
+import software.amazon.awssdk.enhanced.dynamodb.DefaultAttributeConverterProvider;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.net.URI;
+import java.util.Optional;
 
-@DynamoDbBean
+@DynamoDbBean(converterProviders = {
+        CustomAttributeConverterProvider.class,
+        DefaultAttributeConverterProvider.class})
 public class OptModel {
 
     private final String innerValue;
@@ -39,11 +44,11 @@ public class OptModel {
 
     public void setIntValue(int intValue) { }
 
-    public URI getUrl() {
-        return url;
+    public Optional<URI> getUrl() {
+        return Optional.ofNullable(url);
     }
 
-    public void setUrl(URI url) { }
+    public void setUrl(Optional<URI> url) { }
 
     public ContentType getContentType() {
         return contentType;

@@ -8,7 +8,9 @@ import software.amazon.awssdk.enhanced.dynamodb.EnhancedType;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.LongAttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.OptionalAttributeConverter;
 import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.StringAttributeConverter;
+import software.amazon.awssdk.enhanced.dynamodb.internal.converter.attribute.UriAttributeConverter;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class CustomAttributeConverterProvider implements AttributeConverterProvi
     public CustomAttributeConverterProvider() {
         OptionalAttributeConverter<String> optionalStringConverter = OptionalAttributeConverter.create(StringAttributeConverter.create());
         OptionalAttributeConverter<Long> optionalLongConverter = OptionalAttributeConverter.create(LongAttributeConverter.create());
+        OptionalAttributeConverter<URI> uriOptionalConverter = OptionalAttributeConverter.create(UriAttributeConverter.create());
 
         // Case 1: using custom AttributeConverter implementation
         //OptionalAttributeConverter<Map<String, String>> optionalMapAttributeConverter = OptionalAttributeConverter.create(new HashMapAttributeConverter());
@@ -33,7 +36,7 @@ public class CustomAttributeConverterProvider implements AttributeConverterProvi
         // Custom converter for Optional custom object
         OptionalAttributeConverter<OptModel> optionalOptModelConverter = OptionalAttributeConverter.create(new OptModelAttributeConverter());
 
-        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter, optionalOptModelConverter);
+        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter, optionalOptModelConverter, uriOptionalConverter);
         customConvertersMap = customConverters.stream().collect(Collectors.toMap(AttributeConverter::type, c -> c));
     }
 

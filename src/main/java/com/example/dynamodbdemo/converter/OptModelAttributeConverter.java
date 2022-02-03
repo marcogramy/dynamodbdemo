@@ -18,7 +18,10 @@ public class OptModelAttributeConverter implements AttributeConverter<OptModel> 
         Map<String, AttributeValue> mapAttr = new HashMap<>();
         mapAttr.put("innerValue", EnhancedAttributeValue.fromString(input.getInnerValue()).toAttributeValue());
         mapAttr.put("intValue", EnhancedAttributeValue.fromNumber(String.valueOf(input.getIntValue())).toAttributeValue());
-        mapAttr.put("url", EnhancedAttributeValue.fromString(input.getUrl().toString()).toAttributeValue());
+
+        // Add url field if present
+        input.getUrl().map(uri -> mapAttr.put("url", EnhancedAttributeValue.fromString(uri.toString()).toAttributeValue()));
+
         mapAttr.put("contentType", EnhancedAttributeValue.fromString(input.getContentType().name()).toAttributeValue());
 
         return EnhancedAttributeValue.fromMap(mapAttr).toAttributeValue();
