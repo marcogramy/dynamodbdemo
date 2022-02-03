@@ -24,7 +24,7 @@ public class CustomAttributeConverterProvider implements AttributeConverterProvi
         OptionalAttributeConverter<Long> optionalLongConverter = OptionalAttributeConverter.create(LongAttributeConverter.create());
 
         // Case 1: using custom AttributeConverter implementation
-        //OptionalAttributeConverter<Map<String, String>> optionalMapAttributeConverter = OptionalAttributeConverter.create(new HashMapAttributeConverter());
+        OptionalAttributeConverter<Map<String, String>> optionalMapAttributeConverter = OptionalAttributeConverter.create(new HashMapAttributeConverter());
 
         // Case 2: using MapAttributeConverter from AWS SDK
         //AttributeConverter<Map<String, String>> mapConverter = MapAttributeConverter.mapConverter(StringStringConverter.create(), StringAttributeConverter.create());
@@ -33,7 +33,7 @@ public class CustomAttributeConverterProvider implements AttributeConverterProvi
         // Custom converter for Optional custom object
         OptionalAttributeConverter<OptModel> optionalOptModelConverter = OptionalAttributeConverter.create(new OptModelAttributeConverter());
 
-        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter, optionalOptModelConverter);
+        List<AttributeConverter<?>> customConverters = Arrays.asList(optionalStringConverter, optionalLongConverter, optionalOptModelConverter, optionalMapAttributeConverter);
         customConvertersMap = customConverters.stream().collect(Collectors.toMap(AttributeConverter::type, c -> c));
     }
 
