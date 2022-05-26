@@ -5,6 +5,7 @@ import software.amazon.awssdk.enhanced.dynamodb.DefaultAttributeConverterProvide
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.Optional;
 
 @DynamoDbBean(converterProviders = {
@@ -16,6 +17,7 @@ public class OptModel {
     private int intValue;
     private URI url;
     private ContentType contentType;
+    private Duration timeout;
 
     public enum ContentType {
         URLENCODED, JSON, XML;
@@ -55,4 +57,10 @@ public class OptModel {
     }
 
     public void setContentType(ContentType contentType) { }
+
+    public Duration getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Duration timeout) { }
 }
